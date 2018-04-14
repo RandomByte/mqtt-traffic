@@ -12,7 +12,7 @@ MQTT_TRAFFIC_LANGUAGE=en \
 MQTT_TRAFFIC_API_KEY="<your google API key>" \
 MQTT_TRAFFIC_MQTT_BROKER=mqtt://<broker HOST or IP> \
 MQTT_TRAFFIC_MQTT_TOPIC=Home/WorkTraffic \
-node index.js
+npm start
 ````
 
 #### Output

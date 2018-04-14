@@ -4,14 +4,17 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Merlin Beutlberger",
   "license": "MIT",
   "dependencies": {
     "@google/maps": "^0.4.6",
-    "eslint": "^4.19.1",
-    "eslint-config-google": "^0.9.1",
     "mqtt": "^2.17.0"
+  },
+  "devDependencies": {
+    "eslint": "^4.19.1",
+    "eslint-config-google": "^0.9.1"
   }
 }
