@@ -1,7 +1,7 @@
 {
   "name": "mqtt-traffic",
   "version": "1.0.1",
-  "description": "",
+  "description": "Monitor road traffic conditions between two locations via Google Maps and publish them to MQTT",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
@@ -9,6 +9,14 @@
   },
   "author": "Merlin Beutlberger",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RandomByte/mqtt-traffic.git"
+  },
+  "bugs": {
+    "url": "https://github.com/RandomByte/mqtt-traffic/issues"
+  },
+  "homepage": "https://github.com/RandomByte/mqtt-traffic#readme",
   "dependencies": {
     "@google/maps": "^0.4.6",
     "mqtt": "^2.17.0"
