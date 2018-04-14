@@ -1,4 +1,6 @@
 # mqtt-traffic
+[![Docker Hub Pulls](https://img.shields.io/docker/pulls/randombyte/armhf-mqtt-traffic.svg)](https://hub.docker.com/r/randombyte/armhf-mqtt-traffic)
+
 Monitors traffic conditions from one location to another and publishes updates via MQTT.
 
 ## Example
@@ -6,12 +8,12 @@ Routes from **Frankfurt to Stuttgart** based on current traffic conditions:
 
 #### Command
 ````sh
-MQTT_TRAFFIC_ORIGIN=Frankfurt \
-MQTT_TRAFFIC_DESTINATION=Stuttgart \
-MQTT_TRAFFIC_LANGUAGE=en \
+MQTT_TRAFFIC_ORIGIN="Frankfurt" \
+MQTT_TRAFFIC_DESTINATION="Stuttgart" \
+MQTT_TRAFFIC_LANGUAGE="en" \
 MQTT_TRAFFIC_API_KEY="<your google API key>" \
-MQTT_TRAFFIC_MQTT_BROKER=mqtt://<broker HOST or IP> \
-MQTT_TRAFFIC_MQTT_TOPIC=Home/WorkTraffic \
+MQTT_TRAFFIC_MQTT_BROKER="mqtt://<broker HOST or IP>" \
+MQTT_TRAFFIC_MQTT_TOPIC="Home/WorkTraffic" \
 npm start
 ````
 
@@ -50,6 +52,21 @@ mqtt-traffic can be configured using environment variables:
 - **MQTT_TRAFFIC_API_KEY:** [Your Google Maps Web Service API Key](https://github.com/googlemaps/google-maps-services-js#api-keys)
 - **MQTT_TRAFFIC_MQTT_BROKER:** URL of your MQTT broker, e.g. `mqtt://test.mosquitto.org`
 - **MQTT_TRAFFIC_MQTT_TOPIC:** MQTT topic to publish traffic data on, e.g. `Traffic/Work`
+
+## Docker Image
+A Docker image for the **armhf** architecture (Raspberry Pi et al.) is available on [Docker Hub](https://hub.docker.com/r/randombyte/armhf-mqtt-traffic).
+
+**Example:**
+````sh
+docker run --rm -it \
+-e MQTT_TRAFFIC_ORIGIN="Frankfurt" \
+-e MQTT_TRAFFIC_DESTINATION="Stuttgart" \
+-e MQTT_TRAFFIC_LANGUAGE="en" \
+-e MQTT_TRAFFIC_API_KEY="<your google API key>" \
+-e MQTT_TRAFFIC_MQTT_BROKER="mqtt://<broker HOST or IP>" \
+-e MQTT_TRAFFIC_MQTT_TOPIC="Home/WorkTraffic" \
+randombyte/armhf-mqtt-traffic:latest
+````
 
 ## License
 Released under the [MIT License](https://opensource.org/licenses/MIT).
