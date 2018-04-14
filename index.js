@@ -43,6 +43,7 @@ async function updateTrafficData() {
 		console.log("Error:");
 		console.log(err);
 	}
+	console.log("Done. Sleeping for 5 minutes.");
 	setTimeout(updateTrafficData, 1000 * 60 * 5); // repeat after 5 min
 }
 
