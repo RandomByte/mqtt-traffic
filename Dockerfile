@@ -7,11 +7,6 @@ COPY package*.json ./
 # Install dependencies
 RUN npm install --only=production
 
-# Add the rest of the sources
-ADD ./index.js /
-
-RUN npm run dist
-
 COPY ./index.js .
 
 ENV MQTT_TRAFFIC_ORIGIN=
