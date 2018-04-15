@@ -1,11 +1,11 @@
 {
   "name": "mqtt-traffic",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Monitor road traffic conditions between two locations via Google Maps and publish them to MQTT",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "eslint ./"
   },
   "author": "Merlin Beutlberger",
   "license": "MIT",

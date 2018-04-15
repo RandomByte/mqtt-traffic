@@ -9,7 +9,8 @@ const mqttBroker = process.env.MQTT_TRAFFIC_MQTT_BROKER;
 const mqttTopic = process.env.MQTT_TRAFFIC_MQTT_TOPIC;
 
 if (!origin || !destination || !language || !apiKey || !mqttBroker || !mqttTopic) {
-	throw new Error("Configuration environment variable(s) missing");
+	console.log("Configuration environment variable(s) missing");
+	process.exit(1);
 }
 
 console.log(`Monitoring traffic conditions from ${origin} to ${destination} and ` +
@@ -71,10 +72,13 @@ function getRoutes() {
 
 function publishTraffic(trafficData) {
 	console.log("Publishing...");
-	const data = JSON.stringify(trafficData);
-	mqttClient.publish(mqttTopic, data, {
-		qos: 2 // must arrive and must arrive exactly once - also ensures order
+	const msg = JSON.stringify(trafficData);
+	mqttClient.publish(mqttTopic, msg, {
+		qos: 2, // must arrive and must arrive exactly once - also ensures order
+		retain: true
 	});
 }
 
-updateTrafficData();
+mqttClient.on("connect", function() {
+	updateTrafficData();
+});
