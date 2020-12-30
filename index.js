@@ -1,4 +1,4 @@
-const googleMaps = require("@google/maps");
+const {Client} = require("@googlemaps/google-maps-services-js");
 const mqtt = require("mqtt");
 
 const origin = process.env.MQTT_TRAFFIC_ORIGIN;
@@ -17,11 +17,7 @@ console.log(`Monitoring traffic conditions from ${origin} to ${destination} and 
 	`publishing updates to the MQTT broker at ${mqttBroker} on topic ${mqttTopic}...`);
 
 const mqttClient = mqtt.connect(mqttBroker);
-
-const googleMapsClient = googleMaps.createClient({
-	key: apiKey,
-	Promise: Promise
-});
+const mapsClient = new Client({})
 
 async function updateTrafficData() {
 	try {
@@ -50,32 +46,32 @@ async function updateTrafficData() {
 
 function getRoutes() {
 	console.log("Retrieving directions...");
-	return googleMapsClient.directions({
-		origin,
-		destination,
-		language,
-		mode: "driving",
-		alternatives: true
-	}).asPromise()
-		.then((res) => {
-			const data = res.json;
-
-			if (!data || !data.routes) {
-				throw new Error("No data received");
-			} else if (data.status !== "OK") {
-				throw new Error("Bad status: " + data.status);
-			} else {
-				return data.routes;
-			}
-		});
+	return mapsClient.directions({
+		params: {
+			origin,
+			destination,
+			language,
+			mode: "driving",
+			alternatives: true,
+			key: apiKey
+		}
+	}).then((res) => {
+		const data = res.data;
+		if (!data || !data.routes) {
+			throw new Error("No data received");
+		} else if (data.status !== "OK") {
+			throw new Error("Bad status: " + data.status);
+		} else {
+			return data.routes;
+		}
+	});
 }
 
 function publishTraffic(trafficData) {
 	console.log("Publishing...");
 	const msg = JSON.stringify(trafficData);
 	mqttClient.publish(mqttTopic, msg, {
-		qos: 2, // must arrive and must arrive exactly once - also ensures order
-		retain: true
+		qos: 1, // must arrive at least once - also ensures order
 	});
 }
 
