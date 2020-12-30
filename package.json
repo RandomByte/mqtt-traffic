@@ -1,6 +1,6 @@
 {
   "name": "mqtt-traffic",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Monitor road traffic conditions between two locations via Google Maps and publish them to MQTT",
   "main": "index.js",
   "scripts": {
