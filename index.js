@@ -6,33 +6,38 @@ const destination = process.env.MQTT_TRAFFIC_DESTINATION;
 const language = process.env.MQTT_TRAFFIC_LANGUAGE;
 const apiKey = process.env.MQTT_TRAFFIC_API_KEY;
 const mqttBroker = process.env.MQTT_TRAFFIC_MQTT_BROKER;
-const mqttTopic = process.env.MQTT_TRAFFIC_MQTT_TOPIC;
 
-if (!origin || !destination || !language || !apiKey || !mqttBroker || !mqttTopic) {
+// Remove any trailing slash from topic prefix because we can
+const mqttTopicPrefix = process.env.MQTT_TRAFFIC_MQTT_TOPIC_PREFIX.replace(/\/$/, "");
+
+if (!origin || !destination || !language || !apiKey || !mqttBroker || !mqttTopicPrefix) {
 	console.log("Configuration environment variable(s) missing");
 	process.exit(1);
 }
 
 console.log(`Monitoring traffic conditions from ${origin} to ${destination} and ` +
-	`publishing updates to the MQTT broker at ${mqttBroker} on topic ${mqttTopic}...`);
+	`publishing updates to the MQTT broker at ${mqttBroker} using topic prefix ${mqttTopicPrefix}/...`);
 
 const mqttClient = mqtt.connect(mqttBroker);
-const mapsClient = new Client({})
+const mapsClient = new Client({});
 
 async function updateTrafficData() {
 	try {
 		const routes = await getRoutes();
-		const trafficData = {};
-		console.log("Current traffic conditions:");
-		for (let i = 0; i < routes.length; i++) {
-			const route = routes[i];
+
+		const routeOptions = routes.map((route) => {
 			const durationSec = route.legs[0].duration.value;
 			const duration = Math.ceil(durationSec/60);
-			console.log(`${route.summary}: ${duration}min`);
-			trafficData[route.summary] = {duration};
-		}
-		if (Object.keys(trafficData).length) {
-			await publishTraffic(trafficData);
+			return {
+				name: route.summary,
+				duration
+			};
+		}).sort((a, b) => {
+			return a.duration - b.duration;
+		});
+
+		if (routeOptions.length) {
+			await publishTraffic(routeOptions);
 		} else {
 			console.log("Nothing to publish");
 		}
@@ -67,11 +72,18 @@ function getRoutes() {
 	});
 }
 
-function publishTraffic(trafficData) {
-	console.log("Publishing...");
-	const msg = JSON.stringify(trafficData);
-	mqttClient.publish(mqttTopic, msg, {
-		qos: 1, // must arrive at least once - also ensures order
+function publishTraffic(routeOptions) {
+	console.log("Publishing current traffic conditions (first is quickest):");
+
+	routeOptions.forEach((route, idx) => {
+		const routeTopic = `${mqttTopicPrefix}/${idx}/`;
+		console.log(`[${routeTopic}] "${route.name}" taking ${route.duration} min`);
+		mqttClient.publish(routeTopic + "name", route.name, {
+			qos: 1
+		});
+		mqttClient.publish(routeTopic + "duration", String(route.duration), {
+			qos: 1
+		});
 	});
 }
 

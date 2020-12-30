@@ -14,7 +14,7 @@ mqtt-traffic can be configured using environment variables:
 - **MQTT_TRAFFIC_LANGUAGE:** Language to be used in the route summary
 - **MQTT_TRAFFIC_API_KEY:** [Your Google Maps Web Service API Key](https://github.com/googlemaps/google-maps-services-js#api-keys)
 - **MQTT_TRAFFIC_MQTT_BROKER:** URL of your MQTT broker, e.g. `mqtt://test.mosquitto.org`
-- **MQTT_TRAFFIC_MQTT_TOPIC:** MQTT topic to publish traffic data on, e.g. `Traffic/Work`
+- **MQTT_TRAFFIC_MQTT_TOPIC_PPREFIX** MQTT topic prefix to publish traffic data on, e.g. `Traffic/Work/`
 
 ## Docker Image
 A Docker image for the **armhf** architecture (Raspberry Pi et al.) is available on [Docker Hub](https://hub.docker.com/r/randombyte/armhf-mqtt-traffic).
@@ -30,7 +30,7 @@ docker run --rm -it \
 -e MQTT_TRAFFIC_LANGUAGE="en" \
 -e MQTT_TRAFFIC_API_KEY="<your google API key>" \
 -e MQTT_TRAFFIC_MQTT_BROKER="mqtt://<broker HOST or IP>" \
--e MQTT_TRAFFIC_MQTT_TOPIC="Home/WorkTraffic" \
+-e MQTT_TRAFFIC_MQTT_TOPIC_PPREFIX="Traffic/Work/" \
 randombyte/armhf-mqtt-traffic:latest
 ````
 
@@ -41,32 +41,29 @@ MQTT_TRAFFIC_DESTINATION="Stuttgart" \
 MQTT_TRAFFIC_LANGUAGE="en" \
 MQTT_TRAFFIC_API_KEY="<your google API key>" \
 MQTT_TRAFFIC_MQTT_BROKER="mqtt://<broker HOST or IP>" \
-MQTT_TRAFFIC_MQTT_TOPIC="Home/WorkTraffic" \
+MQTT_TRAFFIC_MQTT_TOPIC_PPREFIX="Traffic/Work/" \
 npm start
 ````
 
 ### Output
 ```
-A5 and A8: 134min
-A6: 140min
-A3 and A81: 156min
+Publishing current traffic conditions (first is quickest):
+[Traffic/Work/0/] "A5 and A8" taking 139 min
+[Traffic/Work/1/] "A5, A8 and B14" taking 140 min
+[Traffic/Work/2/] "A6" taking 144 min
+Done. Sleeping for 5 minutes.
 ```
 
-### MQTT message payload
-```json
-{
-    "A5 and A8": {
-        "duration": 134
-    },
-    "A6": {
-        "duration": 140
-    },
-    "A3 and A81": {
-        "duration": 156
-    }
-}
-```
+### MQTT Message Examples
 
+| Topic        | Payload
+| ------------- |-------------|
+| `Traffic/Work/0/name` | `A5 and A8` |
+| `Traffic/Work/0/duration` | `139` |
+| `Traffic/Work/1/name` | `A5, A8 and B14` |
+| `Traffic/Work/1/duration` | `140` |
+| `Traffic/Work/2/name` | `A6` |
+| `Traffic/Work/2/duration` | `144` |
 
 ## License
 Released under the [MIT License](https://opensource.org/licenses/MIT).
