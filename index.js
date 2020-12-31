@@ -32,8 +32,6 @@ async function updateTrafficData() {
 				name: route.summary,
 				duration
 			};
-		}).sort((a, b) => {
-			return a.duration - b.duration;
 		});
 
 		if (routeOptions.length) {
@@ -75,13 +73,10 @@ function getRoutes() {
 function publishTraffic(routeOptions) {
 	console.log("Publishing current traffic conditions (first is quickest):");
 
-	routeOptions.forEach((route, idx) => {
-		const routeTopic = `${mqttTopicPrefix}/${idx}/`;
-		console.log(`[${routeTopic}] "${route.name}" taking ${route.duration} min`);
-		mqttClient.publish(routeTopic + "name", route.name, {
-			qos: 1
-		});
-		mqttClient.publish(routeTopic + "duration", String(route.duration), {
+	routeOptions.forEach((route) => {
+		const routeTopic = `${mqttTopicPrefix}/Routes`;
+		console.log(`[${routeTopic}]: ${route.name} takes ${route.duration} min`);
+		mqttClient.publish(routeTopic, `${route.name};${route.duration}`, {
 			qos: 1
 		});
 	});

@@ -58,12 +58,9 @@ Done. Sleeping for 5 minutes.
 
 | Topic        | Payload
 | ------------- |-------------|
-| `Traffic/Work/0/name` | `A5 and A8` |
-| `Traffic/Work/0/duration` | `139` |
-| `Traffic/Work/1/name` | `A5, A8 and B14` |
-| `Traffic/Work/1/duration` | `140` |
-| `Traffic/Work/2/name` | `A6` |
-| `Traffic/Work/2/duration` | `144` |
+| `Traffic/Work/Routes` | `A5 and A8;139` |
+| `Traffic/Work/Routes` | `A5, A8 and B14;140` |
+| `Traffic/Work/Routes` | `A6;144` |
 
 ## License
 Released under the [MIT License](https://opensource.org/licenses/MIT).
