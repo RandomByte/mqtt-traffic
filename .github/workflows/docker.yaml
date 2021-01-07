@@ -22,7 +22,7 @@ jobs:
         id: docker_meta
         uses: crazy-max/ghaction-docker-meta@v1
         with:
-          images: randombyte/mqtt-traffic # list of Docker images to use as base name for tags
+          images: randombyte/mqtt-traffic
           tag-match: v(.*)
           tag-match-group: 1
       -
