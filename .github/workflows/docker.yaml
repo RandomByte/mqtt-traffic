@@ -24,7 +24,6 @@ jobs:
         uses: crazy-max/ghaction-docker-meta@v1
         with:
           images: randombyte/mqtt-traffic # list of Docker images to use as base name for tags
-          tag-sha: true # add git short SHA as Docker tag
           tag-match: v(.*)
           tag-match-group: 1
       -
