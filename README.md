@@ -1,5 +1,5 @@
 # mqtt-traffic
-[![Docker Hub Pulls](https://img.shields.io/docker/pulls/randombyte/armhf-mqtt-traffic.svg)](https://hub.docker.com/r/randombyte/armhf-mqtt-traffic)
+[![Docker Hub Pulls](https://img.shields.io/docker/pulls/randombyte/mqtt-traffic.svg)](https://hub.docker.com/r/randombyte/mqtt-traffic)
 
 Monitors traffic conditions from one location to another and publishes updates via MQTT.
 
@@ -17,7 +17,7 @@ mqtt-traffic can be configured using environment variables:
 - **MQTT_TRAFFIC_MQTT_TOPIC_PPREFIX** MQTT topic prefix to publish traffic data on, e.g. `Traffic/Work/`
 
 ## Docker Image
-A Docker image for the **armhf** architecture (Raspberry Pi et al.) is available on [Docker Hub](https://hub.docker.com/r/randombyte/armhf-mqtt-traffic).
+A Docker image is available on [Docker Hub](https://hub.docker.com/r/randombyte/mqtt-traffic).
 
 ## Example
 Routes from **Frankfurt to Stuttgart** based on current traffic conditions
@@ -31,7 +31,7 @@ docker run --rm -it \
 -e MQTT_TRAFFIC_API_KEY="<your google API key>" \
 -e MQTT_TRAFFIC_MQTT_BROKER="mqtt://<broker HOST or IP>" \
 -e MQTT_TRAFFIC_MQTT_TOPIC_PPREFIX="Traffic/Work/" \
-randombyte/armhf-mqtt-traffic:latest
+randombyte/mqtt-traffic:latest
 ````
 
 ### Option 2: Source
