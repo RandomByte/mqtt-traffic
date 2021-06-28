@@ -19,7 +19,7 @@
   "homepage": "https://github.com/RandomByte/mqtt-traffic#readme",
   "dependencies": {
     "@googlemaps/google-maps-services-js": "^3.1.16",
-    "mqtt": "^4.2.6"
+    "mqtt": "^4.2.8"
   },
   "devDependencies": {
     "eslint": "^7.27.0",
